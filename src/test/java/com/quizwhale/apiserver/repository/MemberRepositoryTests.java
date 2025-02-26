@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @SpringBootTest
@@ -61,6 +62,14 @@ public class MemberRepositoryTests {
         String email = "sample@example.com";
         Member member = memberRepository.findByEmail(email);
         log.info(member);
+    }
+
+    @Test
+    public void testReadMemberByMno() {
+        Long mno = 1L;
+        Object result = memberRepository.getMemberByMno(mno);
+        Object[] arr = (Object[]) result;
+        log.info(Arrays.toString(arr));
     }
 
 }
