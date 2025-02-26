@@ -3,12 +3,14 @@ package com.quizwhale.apiserver.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString
+@ToString(exclude = "quizList")
 public class Member extends BaseEntity {
 
     @Id
@@ -26,6 +28,9 @@ public class Member extends BaseEntity {
 
     @Builder.Default
     private MemberRole memberRole = MemberRole.USER;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Quiz> quizList;
 
     public void changeRole(MemberRole memberRole) {
         this.memberRole = memberRole;
