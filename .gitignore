@@ -38,3 +38,5 @@ out/
 
 ### Java Version ###
 .java-version
+
+src/main/resources/application.properties
