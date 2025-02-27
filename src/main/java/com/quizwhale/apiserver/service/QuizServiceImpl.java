@@ -52,8 +52,8 @@ public class QuizServiceImpl implements QuizService {
         body.add("file", quizRequestDTO.getFile().getResource());
         body.add("mno", quizRequestDTO.getMno());
         body.add("type", quizRequestDTO.getType().toString().toLowerCase());
-        body.add("start", quizRequestDTO.getStartPage());
-        body.add("end", quizRequestDTO.getEndPage());
+        body.add("start", quizRequestDTO.getStart());
+        body.add("end", quizRequestDTO.getEnd());
         body.add("keyword", quizRequestDTO.getKeyword());
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
@@ -68,7 +68,6 @@ public class QuizServiceImpl implements QuizService {
             throw new CustomServiceException("AI_SERVER_REQUEST_FAILED");
         }
 
-        log.info("response: " + response.getBody());
         List<QuizDTO> quizList = response.getBody();
         for (QuizDTO quizDTO : quizList) {
             quizDTO.setQno(register(quizDTO));

@@ -19,7 +19,7 @@ public class QuizRequestDTO {
 
     private QuizType type;
 
-    private int startPage, endPage;
+    private int start, end;
 
     private String keyword;
 
