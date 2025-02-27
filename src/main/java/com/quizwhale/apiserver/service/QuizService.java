@@ -3,12 +3,16 @@ package com.quizwhale.apiserver.service;
 import com.quizwhale.apiserver.domain.Member;
 import com.quizwhale.apiserver.domain.Quiz;
 import com.quizwhale.apiserver.dto.QuizDTO;
+import com.quizwhale.apiserver.dto.QuizRequestDTO;
+import com.quizwhale.apiserver.dto.QuizResponseDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface QuizService {
 
     QuizDTO get(Long qno);
+
+    QuizResponseDTO uploadAndGetList(QuizRequestDTO quizRequestDTO);
 
     Long register(QuizDTO quizDTO);
 

@@ -1,6 +1,8 @@
 package com.quizwhale.apiserver.controller;
 
 import com.quizwhale.apiserver.dto.QuizDTO;
+import com.quizwhale.apiserver.dto.QuizRequestDTO;
+import com.quizwhale.apiserver.dto.QuizResponseDTO;
 import com.quizwhale.apiserver.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,10 +25,8 @@ public class QuizController {
     }
 
     @PostMapping("/")
-    @PreAuthorize("#quizDTO.mno == authentication.principal.mno")
-    public Map<String, Long> register(QuizDTO quizDTO) {
-        long qno = quizService.register(quizDTO);
-        return Map.of("QNO", qno);
+    public QuizResponseDTO register(QuizRequestDTO quizRequestDTO) {
+        return quizService.uploadAndGetList(quizRequestDTO);
     }
 
     @PatchMapping("/correct/{qno}")

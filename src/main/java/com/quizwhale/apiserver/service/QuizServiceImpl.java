@@ -3,18 +3,30 @@ package com.quizwhale.apiserver.service;
 import com.quizwhale.apiserver.domain.Member;
 import com.quizwhale.apiserver.domain.Quiz;
 import com.quizwhale.apiserver.dto.QuizDTO;
+import com.quizwhale.apiserver.dto.QuizRequestDTO;
+import com.quizwhale.apiserver.dto.QuizResponseDTO;
 import com.quizwhale.apiserver.repository.QuizRepository;
 import com.quizwhale.apiserver.util.CustomServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Log4j2
 @RequiredArgsConstructor
 public class QuizServiceImpl implements QuizService {
+
+    @Value("${ai.server.url}")
+    private String aiServerUrl;
 
     private final QuizRepository quizRepository;
 
@@ -26,6 +38,38 @@ public class QuizServiceImpl implements QuizService {
         }
         Object[] arr = (Object[]) result;
         return entityToDTO((Quiz) arr[0], (Member) arr[1]);
+    }
+
+    @Override
+    public QuizResponseDTO uploadAndGetList(QuizRequestDTO quizRequestDTO) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", quizRequestDTO.getFile().getResource());
+        body.add("type", quizRequestDTO.getFile().getContentType());
+        body.add("start", quizRequestDTO.getStartPage());
+        body.add("end", quizRequestDTO.getEndPage());
+        body.add("keyword", quizRequestDTO.getKeyword());
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        ResponseEntity<List<QuizDTO>> response = new RestTemplate().exchange(
+                aiServerUrl,
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<>() {}
+        );
+
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new CustomServiceException("AI_SERVER_REQUEST_FAILED");
+        }
+
+        List<QuizDTO> quizList = response.getBody();
+        for (QuizDTO quizDTO : quizList) {
+            quizDTO.setQno(register(quizDTO));
+        }
+
+        return QuizResponseDTO.builder().quizzes(quizList).build();
     }
 
     @Override
