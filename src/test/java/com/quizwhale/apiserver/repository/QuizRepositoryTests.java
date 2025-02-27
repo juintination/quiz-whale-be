@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 
 @SpringBootTest
@@ -50,9 +51,18 @@ public class QuizRepositoryTests {
                 .memberRole(MemberRole.USER)
                 .build());
 
+        Map<String, String> choices = Map.of(
+                "A", faker.lorem().sentence(),
+                "B", faker.lorem().sentence(),
+                "C", faker.lorem().sentence(),
+                "D", faker.lorem().sentence(),
+                "E", faker.lorem().sentence()
+        );
+
         Quiz result = quizRepository.save(Quiz.builder()
                         .title(faker.lorem().sentence())
-                        .content(faker.lorem().paragraph())
+                        .problem(faker.lorem().paragraph())
+                        .choices(choices)
                         .answer(faker.lorem().word())
                         .isCorrect(faker.bool().bool())
                         .member(member)
@@ -75,6 +85,7 @@ public class QuizRepositoryTests {
     }
 
     @Test
+    @Transactional
     public void testReadQuizByQno() {
         Long qno = 1L;
         Object result = quizRepository.getQuizByQno(qno);
@@ -93,6 +104,5 @@ public class QuizRepositoryTests {
         log.info(result);
 
     }
-
 
 }

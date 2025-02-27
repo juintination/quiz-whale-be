@@ -9,7 +9,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.UUID;
+import java.util.Map;
 
 @SpringBootTest
 @Log4j2
@@ -49,10 +49,19 @@ public class QuizServiceTests {
         log.info(mno);
         log.info(memberService.get(mno));
 
+        Map<String, String> choices = Map.of(
+                "A", faker.lorem().sentence(),
+                "B", faker.lorem().sentence(),
+                "C", faker.lorem().sentence(),
+                "D", faker.lorem().sentence(),
+                "E", faker.lorem().sentence()
+        );
+
         QuizDTO quizDTO = QuizDTO.builder()
                 .mno(mno)
                 .title(faker.lorem().sentence())
-                .content(faker.lorem().paragraph())
+                .problem(faker.lorem().paragraph())
+                .choices(choices)
                 .answer(faker.lorem().word())
                 .isCorrect(false)
                 .build();

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Data
 @Builder
@@ -15,7 +16,11 @@ public class QuizDTO {
 
     private Long qno, mno;
 
-    private String title, content, answer;
+    private int id;
+
+    private String title, problem, answer, explanation;
+
+    private Map<String, String> choices;
 
     private boolean isCorrect;
 

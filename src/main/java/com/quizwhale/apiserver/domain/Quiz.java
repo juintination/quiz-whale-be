@@ -3,6 +3,8 @@ package com.quizwhale.apiserver.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Map;
+
 @Entity
 @Getter
 @Builder
@@ -15,11 +17,21 @@ public class Quiz extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long qno;
 
+    private int id;
+
     private String title;
 
-    private String content;
+    private String problem;
+
+    @ElementCollection
+    @CollectionTable(name = "quiz_choices", joinColumns = @JoinColumn(name = "quiz_id"))
+    @MapKeyColumn(name = "choice_key")
+    @Column(name = "choice_value")
+    private Map<String, String> choices;
 
     private String answer;
+
+    private String explanation;
 
     private boolean isCorrect;
 

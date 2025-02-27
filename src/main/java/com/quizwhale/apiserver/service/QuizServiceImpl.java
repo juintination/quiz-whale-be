@@ -37,7 +37,10 @@ public class QuizServiceImpl implements QuizService {
             throw new CustomServiceException("NOT_EXIST_QUIZ");
         }
         Object[] arr = (Object[]) result;
-        return entityToDTO((Quiz) arr[0], (Member) arr[1]);
+        Quiz quiz = (Quiz) arr[0];
+        Member member = (Member) arr[1];
+        quiz.getChoices().size();
+        return entityToDTO(quiz, member);
     }
 
     @Override
@@ -64,6 +67,7 @@ public class QuizServiceImpl implements QuizService {
             throw new CustomServiceException("AI_SERVER_REQUEST_FAILED");
         }
 
+        log.info("response: " + response.getBody());
         List<QuizDTO> quizList = response.getBody();
         for (QuizDTO quizDTO : quizList) {
             quizDTO.setQno(register(quizDTO));
@@ -74,8 +78,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public Long register(QuizDTO quizDTO) {
-        Quiz quiz = dtoToEntity(quizDTO);
-        Quiz result = quizRepository.save(quiz);
+        Quiz result = quizRepository.save(dtoToEntity(quizDTO));
         return result.getQno();
     }
 
@@ -100,9 +103,12 @@ public class QuizServiceImpl implements QuizService {
         Member member = Member.builder().mno(quizDTO.getMno()).build();
         return Quiz.builder()
                 .qno(quizDTO.getQno())
+                .id(quizDTO.getId())
                 .title(quizDTO.getTitle())
-                .content(quizDTO.getContent())
+                .problem(quizDTO.getProblem())
+                .choices(quizDTO.getChoices())
                 .answer(quizDTO.getAnswer())
+                .explanation(quizDTO.getExplanation())
                 .isCorrect(quizDTO.isCorrect())
                 .member(member)
                 .build();
