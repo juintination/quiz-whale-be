@@ -35,12 +35,13 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/qw-spring-app:latest
 
-      - name: Create SSH Key File
+      - name: Setup SSH Key
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         run: |
-          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" >> private_key.pem
+          echo "$EC2_SSH_KEY" > private_key.pem
+          echo "$EC2_SSH_KEY" | sed 's/\\n/\n/g' > private_key.pem
           chmod 600 private_key.pem
-          mkdir -p ~/.ssh
-          ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: SSH into EC2 and Deploy Docker Container
         run: |
