@@ -3,7 +3,7 @@ name: CI/CD for Spring Boot with Docker & EC2
 on:
   push:
     branches:
-      - Docker
+      - main
 
 jobs:
   build-and-deploy:
