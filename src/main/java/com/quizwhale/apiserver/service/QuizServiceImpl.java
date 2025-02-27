@@ -50,7 +50,7 @@ public class QuizServiceImpl implements QuizService {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", quizRequestDTO.getFile().getResource());
-        body.add("type", quizRequestDTO.getFile().getContentType());
+        body.add("type", quizRequestDTO.getType().toString());
         body.add("start", quizRequestDTO.getStartPage());
         body.add("end", quizRequestDTO.getEndPage());
         body.add("keyword", quizRequestDTO.getKeyword());

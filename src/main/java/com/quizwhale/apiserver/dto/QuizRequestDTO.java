@@ -1,5 +1,6 @@
 package com.quizwhale.apiserver.dto;
 
+import com.quizwhale.apiserver.domain.QuizType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,8 @@ public class QuizRequestDTO {
     private MultipartFile file;
 
     private Long mno;
+
+    private QuizType type;
 
     private int startPage, endPage;
 
