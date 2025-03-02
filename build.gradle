@@ -58,4 +58,8 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+jar {
+	enabled = false
+}
+
 compileJava.dependsOn('clean')
