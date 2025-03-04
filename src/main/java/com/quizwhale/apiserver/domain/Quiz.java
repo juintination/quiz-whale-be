@@ -1,6 +1,5 @@
 package com.quizwhale.apiserver.domain;
 
-import com.quizwhale.apiserver.domain.converter.MapToJsonConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +10,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "member")
+@ToString(exclude = {"member", "choices"})
 public class Quiz extends BaseEntity {
 
     @Id
@@ -24,8 +23,10 @@ public class Quiz extends BaseEntity {
 
     private String problem;
 
-    @Convert(converter = MapToJsonConverter.class)
-    @Column(columnDefinition = "TEXT")
+    @ElementCollection
+    @CollectionTable(name = "quiz_choices", joinColumns = @JoinColumn(name = "quiz_id"))
+    @MapKeyColumn(name = "choice_key")
+    @Column(name = "choice_value")
     private Map<String, String> choices;
 
     private String answer;
