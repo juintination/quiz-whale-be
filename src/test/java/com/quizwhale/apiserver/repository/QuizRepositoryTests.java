@@ -85,7 +85,6 @@ public class QuizRepositoryTests {
     }
 
     @Test
-    @Transactional
     public void testReadQuizByQno() {
         Long qno = 1L;
         Object result = quizRepository.getQuizByQno(qno);
