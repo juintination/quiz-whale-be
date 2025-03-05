@@ -1,5 +1,6 @@
 package com.quizwhale.apiserver.domain;
 
+import com.quizwhale.apiserver.domain.common.TimeStampedEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @ToString(exclude = "quizList")
-public class Member extends BaseEntity {
+public class Member extends TimeStampedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

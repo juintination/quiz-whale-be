@@ -1,4 +1,4 @@
-package com.quizwhale.apiserver.domain;
+package com.quizwhale.apiserver.domain.common;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity {
+public abstract class TimeStampedEntity {
 
     @CreatedDate
     @Column(name = "regdate", updatable = false)
